@@ -1,0 +1,159 @@
+/* The code analyzes a car dataset by loading, cleaning, and visualizing the data. 
+It explores relationships between variables like brand, year, fuel type, and selling price using various plots.
+Key insights include that automatic diesel cars tend to have higher prices, newer cars sell for more, and the top brands are Maruti, Hyundai, and Mahindra. 
+A correlation heatmap is also included to visualize numeric relationships */
+
+# Importing Libraries
+import warnings
+warnings.filterwarnings("ignore", message=".*tight_layout.*")
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+# Importing the Data
+car=pd.read_csv(r"C:\Users\RAVI\Downloads\contentfuturistic_city_traffic.csv')\car_dataset.csv")
+car
+car.head()
+car.info() #Information about the Dataset
+car.shape
+car['name'].value_counts()
+car['name'].str  #to convert object in to string to apply str operation
+Brand =[]
+for i in car['name'].str.split(' '):  # splitting my space
+        Brand.append(i[0]) # creating a new column brand
+car['Brand'] = Brand
+car.head()
+# Data cleaning
+car.isna().sum() # no missing values
+car.duplicated().sum()  # either we have to create a new data set or drop duplicates
+car.drop_duplicates(inplace=True)
+car.duplicated().sum()
+# Structural errors
+car.head()
+car['name'].str.isalnum()
+car['name'].astype('str').str.isnumeric().sum()
+car['year'].unique()
+car['year'].astype('str').str.isnumeric().sum()
+car.shape
+car['selling_price'].unique()
+car['selling_price'].astype('str').str.isnumeric().sum()
+car.shape
+car['km_driven'].unique()
+car['km_driven'].astype('str').str.isnumeric().sum() 
+car.shape
+car['fuel'].unique()
+car['fuel'].astype('str').str.isnumeric().sum()
+car['seller_type'].unique()
+car['seller_type'].astype('str').str.isnumeric().sum()
+car['transmission'].unique()
+car['transmission'].astype('str').str.isnumeric().sum()
+car['owner'].unique()
+car['owner'].astype('str').str.isnumeric().sum()
+car['Brand'].unique()
+car['Brand'].astype('str').str.isnumeric().sum()
+#  Outliers
+car.plot(kind = 'box')
+# Data visualization 
+# Uni-variate Analysis
+car.head()
+sns.countplot(data = car,x = 'Brand')
+sns.countplot(data = car,x = 'Brand')
+plt.xticks(rotation = 90)
+plt.show()
+car['Brand'].value_counts().plot(kind = 'bar')
+car.head()
+car['year'].value_counts().plot(kind = 'bar')
+car['year'].value_counts().nlargest(6).plot(kind  ='bar')
+car['year'].value_counts().nsmallest(7).plot(kind  ='bar')
+car['owner'].value_counts().plot(kind = 'bar')
+
+car['seller_type'].value_counts().plot(kind = 'bar')
+car['transmission'].value_counts().plot(kind = 'bar')
+
+car['fuel'].value_counts().plot(kind = 'pie')
+car['fuel'].value_counts().plot(kind = 'pie',autopct ='%2f%%')
+car['fuel'].value_counts().plot(kind = 'pie',autopct ='%2f%%',explode =[0.001,0.001,0.1,0.06,0.06])
+plt.legend()
+#  numerical Data
+df.head()
+car[car['selling_price'] == 8900000]
+car[car['selling_price'] == 20000]
+car['selling_price'].mean()
+car['transmission'].value_counts().plot(kind = 'bar')
+car['owner'].value_counts().plot(kind = 'bar')
+car['selling_price'].plot(kind = 'hist')
+
+car['km_driven'].plot(kind ='hist')
+plt.xticks(rotation = 90)
+plt.show()
+car[car['km_driven']==1]
+car[car['km_driven'] ==806599] 
+# Univariate Analysis Report
+ #1.Top three brands used cars selling are  Maruthi,Hundai and Mahendra
+ #2. More no of cares are manufactured in the year 2017
+ #3. There are more no of Manual cars compared to Automatic cars
+ #4. 80% of the owners are Individual woners and around 1% are Trust mark 
+ #5. maximum price of the car among all is 89,00,000/- Rs
+ #6. minimum price of the car among all cars is 20,000/-Rs
+ #7. Maximum KM driven is 89,000 Kms 
+# Bi - variate Analysis
+car.head()
+
+# Numerical vs Numerical
+sns.scatterplot(data  =car, x ='km_driven',y='selling_price')
+sns.scatterplot(data = car, x ='km_driven',y = 'selling_price',hue = 'Brand' )
+sns.lineplot(data = car, x = 'year',y = 'selling_price',estimator = 'mean')
+sns.lineplot(data = car,x = 'year',y='selling_price',estimator = 'mean',hue='Brand')
+# As the year increases average selling price increases i.e, most recent cars has more prices 
+sns.scatterplot(data = car,x = 'year',y='selling_price',hue='Brand')
+car.head()
+import scipy.stats as st
+car['fuel'].map({'petrol':1,'Diesel':2,'CNG':3,'LPG':4,'Electric':5})
+car['fuel_transform']=car['fuel'].map({'Petrol':1,'Diesel':2,'CNG':3,'LPG':4,'Electric':5})
+st.pointbiserialr(car['selling_price'],car['fuel_transform'])
+sns.boxplot(data = car,x ='fuel',y = 'selling_price')
+sns.scatterplot(data = car,x ='fuel',y = 'selling_price')
+sns.scatterplot(data = car,x ='fuel',y = 'selling_price',hue  ='fuel')
+sns.scatterplot(data = car, x = 'seller_type',y='selling_price')
+sns.scatterplot(data = car, x ='km_driven',y = 'selling_price',hue = 'fuel' )
+# Diesel car has more selling  followed by petrol
+car.head()
+sns.scatterplot(data = car, x ='km_driven',y = 'selling_price',hue = 'seller_type' )
+
+sns.scatterplot(data = car, x ='seller_type',y = 'selling_price')
+ # Dealer car has more selling price followed by individuals
+# 
+sns.barplot(data =car,x ='transmission',y  ='selling_price')
+# cars More selling price is Automatic
+sns.barplot(data =car,x ='transmission',y  ='selling_price',hue ='fuel')
+Report:
+# 1.The selling price is more for automatic diesel cars compared manual cars
+# 2.Among all types of owners and transmission there is more selling price for automatic diesel cars
+# 3.Among all types of owners and transmission there is less selling price for manual lpg cars
+# 4.there is no much difference in selling price between automatic petrol cars and manual diesel cars
+# 5.There is more selling price for first owner cars compared to all other owner types
+# 6.there is more selling price for dealer cars
+# 7.very less price for trustmark dealers cars
+# 8.most of the cars of all the dealers are below 3lacks
+# 9.Here when the year of manufaacturing is increasing the average selling price is also increasing
+# 10.there is the higest selling price in the year  2020
+# 11.km_driven is not effecting much on the selling_price of the car
+# 12.there is more differance in the brands jaguar,mericedes benz and audi
+sns.catplot(data =car,x ='transmission',y  ='selling_price',hue ='fuel',kind = 'bar',col='owner')
+car.head()
+sns.catplot(data =car, x = 'transmission',y= 'selling_price',hue = 'fuel',kind = 'bar')
+sns.catplot(data =car, x = 'transmission',y= 'selling_price',hue = 'fuel',kind = 'bar',row='year',col = 'owner')
+Report:
+# rightside part is a automatic 
+# leftside part is a manueal
+# in 2020 manufacture   first owner car diesel automatic price around 4.5lacks
+# the more cars which are manufacture in 2020
+# in first owner car which is done by Diesel and Automatically in more selling
+sns.heatmap(car.corr(numeric_only = True),annot =True)
+Report:
+# Visualizes correlations between numeric variables in the car dataset.
+# Displays exact correlation values with annot=True for easy reference.
+# Uses color gradients to represent the strength and direction of correlations.
+# Highlights positive and negative relationships between variables for quick pattern identification.
+# Shows a diagonal of 1s indicating perfect self-correlation for each variable.
